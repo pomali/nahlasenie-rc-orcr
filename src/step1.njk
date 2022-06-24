@@ -3,26 +3,53 @@ layout: layout.njk
 title: Step 1
 ---
 
-Zadajte ICO alebo Nazov
+<h1 class="govuk-heading-xl">Vyberte právnickú osobu</h1>
+{#
+<p class="govuk-body">This is a paragraph inside a two-thirds wide column</p>
+#}
 
 <form
   data-slovensko-digital-autoform-filter="active"
   data-slovensko-digital-autoform="{{ env.API_KEY_AUTOFORM }}"
-  action=""
+  action="/step2/"
 >
-  <p>
-    <label for="name">Názov</label><br />
-    <input type="text" name="name" data-slovensko-digital-autoform="name" />
-  </p>
-  <p>
-    <label for="cin">IČO</label><br />
-    <input type="text" name="cin" data-slovensko-digital-autoform="cin" />
-    <input
-      type="text"
-      name="datahub_corporate_body.url"
-      data-slovensko-digital-autoform="datahub_corporate_body.url"
-    />
-  </p>
+  <fieldset
+    class="govuk-fieldset"
+    role="group"
+    aria-describedby="passport-issued-hint"
+  >
+    <div class="govuk-form-group">
+      <h1 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--l" for="name">
+          Názov spoločnosti
+        </label>
+      </h1>
+      <input
+        class="govuk-input"
+        id="name"
+        type="text"
+        data-slovensko-digital-autoform="name"
+      />
+    </div>
+
+    alebo
+
+    <div class="govuk-form-group">
+      <h1 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--l" for="cin"> IČO </label>
+      </h1>
+      <input
+        class="govuk-input"
+        id="cin"
+        name="cin"
+        type="text"
+        data-slovensko-digital-autoform="cin"
+      />
+    </div>
+    <button class="govuk-button" data-module="govuk-button" type="submit">
+      Save and continue
+    </button>
+  </fieldset>
 </form>
 <!-- 
 <script

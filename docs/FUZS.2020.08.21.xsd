@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.justice.gov.sk/Forms20200821" elementFormDefault="qualified" targetNamespace="http://www.justice.gov.sk/Forms20200821" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:attribute name="stav" type="xs:boolean">
+    <xs:annotation>
+      <xs:documentation>
+        Attribut je urceny pre tranformaciu na zobrazenie stavu importu.
+        true - import presiel.
+        false - chyba pri importe.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:attribute default="false" name="menit" type="xs:boolean">
+    <xs:annotation>
+      <xs:documentation>
+        Attribut reprezentuje checkbox pri sekcii.
+        true  - sekcia obsahuje udaje, ktore treba importovat.
+        false - sekcia je prazdna, netreba importovat.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:element name="FUZS" type="tns:FUZS" />
+  <xs:complexType name="IdentifikacneUdajeFormulara">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Nazov" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IdentifikatorMFSR" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Verzia" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Popis" nillable="true" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="NazovGaranta" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PlatnostOd" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PlatnostDo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="InfoPathData">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Message" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="BinaryIn" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="1" maxOccurs="1" name="BinaryOut" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ValidationResult" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ShowWarnings" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="String2">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String2s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String2">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="String18">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="18" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String18s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String18">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="String32">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="32" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String32s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String32">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="String120">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="120" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String120s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String120">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="String255">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="255" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String255s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String255">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ObchodnyRegister">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="OkresnySud" type="tns:String18s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Ulica" type="tns:String255s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Cislo" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Obec" type="tns:String120s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Psc" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Kod" type="tns:String2s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Datum">
+    <xs:simpleContent>
+      <xs:extension base="xs:date">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Form">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="IdentifikacneUdajeFormulara" type="tns:IdentifikacneUdajeFormulara" />
+      <xs:element minOccurs="0" maxOccurs="1" name="InfoPathData" type="tns:InfoPathData" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ObchodnyRegister" type="tns:ObchodnyRegister" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ZapisatK" nillable="true" type="tns:Datum" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="PrilohyKNavrhu">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="poradoveCislo" nillable="true" type="xs:int" />
+            <xs:element name="Nazov" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Spolocnost" type="xs:string" />
+      <xs:element name="V" type="xs:string" />
+      <xs:element name="Dna" nillable="true" type="xs:date" />
+      <xs:element name="Postou" type="xs:boolean" />
+      <xs:element name="Osobne" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="String4">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String4s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String4">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Oddiel">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String4s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="Int8">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:pattern value="[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Int8s">
+    <xs:simpleContent>
+      <xs:extension base="tns:Int8">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="SpisovaZnacka">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Oddiel" type="tns:Oddiel" />
+      <xs:element minOccurs="1" maxOccurs="1" name="VlozkaCislo" type="tns:Int8s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Sud" type="tns:String2s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ObecEnum">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="StatId" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String120s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ValueFull" type="tns:String120s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Obce">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ObecEnum" type="tns:ObecEnum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Obec">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="StatId" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String120s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Obce" type="tns:Obce" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Stat">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String120s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Adresa">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Ulica" type="tns:String255s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Cislo" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Obec" type="tns:Obec" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Psc" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Stat" type="tns:Stat" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="String20">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String20s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String20">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PravnickaOsoba">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="ObchodneMeno" type="tns:String255s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Ico" type="tns:String18s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="InyIdentifikacnyUdaj" type="tns:String20s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Adresa" type="tns:Adresa" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Podpis">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="TitulPred" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Meno" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Priezvisko" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TitulZa" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfAdresa">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:Adresa" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:Adresa" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaAdresa">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfAdresa">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DobaUrcita">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Datum" nillable="true" type="tns:Datum" />
+      <xs:element minOccurs="1" maxOccurs="1" name="JeDobaUrcita" nillable="true" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfDobaUrcita">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:DobaUrcita" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:DobaUrcita" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaDobaUrcita">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfDobaUrcita">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="String50">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String50s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String50">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="String3">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String3s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String3">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="TypInyIdentifikator">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Znacka" type="tns:String3s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Osoba">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="TitulPred" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Meno" type="tns:String50s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Priezvisko" type="tns:String50s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TitulZa" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DatumNarodenia" nillable="true" type="tns:Datum" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RodneCislo" type="tns:String20s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TypInyIdentifikator" type="tns:TypInyIdentifikator" />
+      <xs:element minOccurs="1" maxOccurs="1" name="InyIdentifikacnyUdaj" type="tns:String20s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="FunkciaClenaStatutarnehoOrganu">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String50s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Funkcia">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="FunkciaClenaStatutarnehoOrganu" type="tns:FunkciaClenaStatutarnehoOrganu" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Funkcia" type="tns:String255s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Osoba" type="tns:Osoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Bydlisko" type="tns:Adresa" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DenVznikuFunkcie" nillable="true" type="tns:Datum" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DenSkonceniaFunkcie" nillable="true" type="tns:Datum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfFunkcia">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:Funkcia" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:Funkcia" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaFunkcia">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfFunkcia">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfIco">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:String18s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:String18s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaIco">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfIco">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Mena">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Znacka" type="tns:String3s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="Decimal6">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="6" />
+      <xs:totalDigits value="18" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Decimal6s">
+    <xs:simpleContent>
+      <xs:extension base="tns:Decimal6">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Peniaze6">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Suma" nillable="true" type="tns:Decimal6s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Mena" type="tns:Mena" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfImanie">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:Peniaze6" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:Peniaze6" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaImanie">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfImanie">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="NText">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="NTexts">
+    <xs:simpleContent>
+      <xs:extension base="tns:NText">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfInePravneSkutocnosti">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:NTexts" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:NTexts" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaInePravneSkutocnosti">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfInePravneSkutocnosti">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="String1000">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1000" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String1000s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String1000">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Likvidacia">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="VstupDatum" nillable="true" type="tns:Datum" />
+      <xs:element minOccurs="1" maxOccurs="1" name="VstupPopis" type="tns:String1000s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SkoncenieDatum" nillable="true" type="tns:Datum" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SkonceniePopis" type="tns:String1000s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfLikvidacia">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:Likvidacia" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:Likvidacia" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaLikvidacia">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfLikvidacia">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LikvidatorPO">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Likvidator" type="tns:PravnickaOsoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="FyzickaOsoba" type="tns:Funkcia" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfLikvidatorPO">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:LikvidatorPO" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:LikvidatorPO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaLikvidatorPO">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfLikvidatorPO">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfObchodneMeno">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:String255s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:String255s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaObchodneMeno">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfObchodneMeno">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="String8000">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="8000" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String8000s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String8000">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PredmetPodnikania">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="PoradoveCislo" type="tns:String3s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Cinnost" type="tns:String8000s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfPredmetPodnikania">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:PredmetPodnikania" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:PredmetPodnikania" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfOrganizacnaZlozka">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis">
+        <xs:complexType>
+          <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element minOccurs="1" maxOccurs="1" name="Oznacenie" type="tns:String255s" />
+            <xs:element minOccurs="1" maxOccurs="1" name="AdresaUmiestnenia" type="tns:Adresa" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz">
+        <xs:complexType>
+          <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element minOccurs="1" maxOccurs="1" name="Oznacenie" type="tns:String255s" />
+            <xs:element minOccurs="1" maxOccurs="1" name="AdresaUmiestnenia" type="tns:Adresa" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="Veduci" type="tns:ZmenaOfFunkcia" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="PredmetPodnikania" type="tns:ZmenaOfPredmetPodnikania" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaPredmetPodnikania">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfPredmetPodnikania">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SekciaOrganizacnaZlozka">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="OrganizacnaZlozka" type="tns:ZmenaOfOrganizacnaZlozka" />
+    </xs:sequence>
+    <xs:attribute ref="tns:menit" use="required" />
+  </xs:complexType>
+  <xs:complexType name="PravnaForma">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String120s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfPravnaForma">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:PravnaForma" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:PravnaForma" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaPravnaForma">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfPravnaForma">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfPravnickaOsoba">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:PravnickaOsoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:PravnickaOsoba" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaPravnickaOsoba">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfPravnickaOsoba">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="String4000">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="4000" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String4000s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String4000">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfPredaj">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:String4000s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:String4000s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CastiPodniku" nillable="true" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaPredaj">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfPredaj">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="SlovenskaZahranicnaEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Slovenska" />
+      <xs:enumeration value="Zahranicna" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="SplynutiePO">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PravnickaOsoba">
+        <xs:attribute name="slovZahrEnum" type="tns:SlovenskaZahranicnaEnum" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfSplynutiePO">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:SplynutiePO" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:SplynutiePO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaSplynutiePO">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfSplynutiePO">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="FyzickaOsoba">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Osoba" type="tns:Osoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Adresa" type="tns:Adresa" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TypVkladu">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="tns:String50s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VkladSpolocnika">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Suma" nillable="true" type="tns:Decimal6s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Mena" type="tns:Mena" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TypVkladu" type="tns:TypVkladu" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Vklad">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="VyskaVkladu" type="tns:VkladSpolocnika" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RozsahSplatenia" type="tns:Peniaze6" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SpolocnikFO">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Spolocnik" type="tns:FyzickaOsoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vklad" type="tns:Vklad" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZaloznePravo">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="CisloZaloznejZmluvy" type="tns:String32s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DatumUzavretiaZaloznejZmluvy" nillable="true" type="tns:Datum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfOsoba">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:Osoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:Osoba" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfZaloznePravo">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:ZaloznePravo" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:ZaloznePravo" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ZaloznyVeritelFO" type="tns:ZmenaOfOsoba" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ZaloznyVeritelPO" type="tns:ZmenaOfPravnickaOsoba" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfSpolocnikFO">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:SpolocnikFO" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:SpolocnikFO" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ZaloznePravo" type="tns:ZmenaOfZaloznePravo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaSpolocnikFO">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfSpolocnikFO">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SpolocnikPO">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Spolocnik" type="tns:PravnickaOsoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vklad" type="tns:Vklad" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfSpolocnikPO">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:SpolocnikPO" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:SpolocnikPO" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ZaloznePravo" type="tns:ZmenaOfZaloznePravo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaSpolocnikPO">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfSpolocnikPO">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfFyzickaOsoba">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:FyzickaOsoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:FyzickaOsoba" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfVklad">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:Vklad" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:Vklad" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaSpluvlastnictvo">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="SpolocnyObchodnyPodiel" type="tns:ZmenaOfVklad" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SpolocnyZastupcaFO" type="tns:ZmenaOfFyzickaOsoba" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SpolocnyZastupcaPO" type="tns:ZmenaOfPravnickaOsoba" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="SpoluvlastnikFO" type="tns:ZmenaOfFyzickaOsoba" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="SpoluvlastnikPO" type="tns:ZmenaOfPravnickaOsoba" />
+    </xs:sequence>
+    <xs:attribute ref="tns:menit" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="String2000">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="2000" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="String2000s">
+    <xs:simpleContent>
+      <xs:extension base="tns:String2000">
+        <xs:attribute ref="tns:stav" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ZmenaOfSposobKonania">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element minOccurs="1" maxOccurs="1" name="Zapis" type="tns:String2000s" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Vymaz" type="tns:String2000s" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SekciaSposobKonania">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ZmenaOfSposobKonania">
+        <xs:attribute ref="tns:menit" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="SplynutieEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Splynutie" />
+      <xs:enumeration value="Zlucenie" />
+      <xs:enumeration value="Rozdelenie" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="FUZS">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Form">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+          <xs:element minOccurs="1" maxOccurs="1" name="SpisovaZnacka" type="tns:SpisovaZnacka" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="NavrhovatelFO" type="tns:FyzickaOsoba" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="NavrhovatelPO" type="tns:PravnickaOsoba" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ObchodneMeno" type="tns:SekciaObchodneMeno" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Sidlo" type="tns:SekciaAdresa" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Ico" type="tns:SekciaIco" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PravnaForma" type="tns:SekciaPravnaForma" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="PredmetPodnikania" type="tns:SekciaPredmetPodnikania" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="StatutarnyOrganFO" type="tns:SekciaFunkcia" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StatutarnyOrganSposobKonania" type="tns:SekciaSposobKonania" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="OrganizacnaZlozka" type="tns:SekciaOrganizacnaZlozka" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="Prokurista" type="tns:SekciaFunkcia" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ProkuraSposobKonania" type="tns:SekciaSposobKonania" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="SpolocnikFO" type="tns:SekciaSpolocnikFO" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="SpolocnikPO" type="tns:SekciaSpolocnikPO" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="Spoluvlastnictvo" type="tns:SekciaSpluvlastnictvo" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="DozornaRada" type="tns:SekciaFunkcia" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ZakladneImanie" type="tns:SekciaImanie" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RozsahSplatenia" type="tns:SekciaImanie" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Likvidacia" type="tns:SekciaLikvidacia" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="LikvidatorFO" type="tns:SekciaFunkcia" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="LikvidatorPO" type="tns:SekciaLikvidatorPO" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LikvidaciaSposobKonania" type="tns:SekciaSposobKonania" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SplynutieEnum" type="tns:SplynutieEnum" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="SplynutiePO" type="tns:SekciaSplynutiePO" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OdovzdavtelImaniaPO" type="tns:SekciaPravnickaOsoba" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="Predaj" type="tns:SekciaPredaj" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="InePravneSkutocnosti" type="tns:SekciaInePravneSkutocnosti" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="Podpis" type="tns:Podpis" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DobaUrcita" type="tns:SekciaDobaUrcita" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

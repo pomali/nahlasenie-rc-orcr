@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ title }}</title>
+    <link rel="stylesheet" href="/layout.css" />
+
     <style>
       .ui-autocomplete {
         width: inherit;
@@ -15,6 +17,11 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+
+        color: #0b0c0c;
+        font-family: "GDS Transport", arial, sans-serif;
+        font-size: 14px;
+        font-weight: 100; 
       }
 
       .ui-autocomplete > li {
@@ -38,8 +45,35 @@
     </style>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+      document.body.className = document.body.className
+        ? document.body.className + " js-enabled"
+        : "js-enabled";
+    </script>
   </head>
   <body>
-    {{ content | safe }}
+    <div class="govuk-width-container">
+      <a href="#" class="govuk-back-link">Back</a>
+
+      <main class="govuk-main-wrapper">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            {{ content | safe }}
+          </div>
+
+          <div class="govuk-grid-column-one-third">
+            <h2 class="govuk-heading-m">One-third column</h2>
+            <p class="govuk-body">
+              This is a paragraph inside a one-third wide column
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="/js/govuk.js"></script>
+    <script>
+      window.GOVUKFrontend.initAll();
+    </script>
   </body>
 </html>
