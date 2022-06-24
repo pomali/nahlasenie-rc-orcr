@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Rad Markdown Blog Post</title>
+    <title>{{ title }}</title>
     <style>
       .ui-autocomplete {
         width: inherit;
@@ -38,10 +38,6 @@
     </style>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script
-      async
-      src="https://autoform.ekosystem.slovensko.digital/assets/autoform.js"
-    ></script>
   </head>
   <body>
     {{ content | safe }}

@@ -1,0 +1,126 @@
+---
+layout: layout.njk
+title: Step 1
+---
+
+Zadajte ICO alebo Nazov
+
+<form
+  data-slovensko-digital-autoform-filter="active"
+  data-slovensko-digital-autoform="{{ env.API_KEY_AUTOFORM }}"
+  action=""
+>
+  <p>
+    <label for="name">Názov</label><br />
+    <input type="text" name="name" data-slovensko-digital-autoform="name" />
+  </p>
+  <p>
+    <label for="cin">IČO</label><br />
+    <input type="text" name="cin" data-slovensko-digital-autoform="cin" />
+    <input
+      type="text"
+      name="datahub_corporate_body.url"
+      data-slovensko-digital-autoform="datahub_corporate_body.url"
+    />
+  </p>
+</form>
+<!-- 
+<script
+  async
+  src="https://autoform.ekosystem.slovensko.digital/assets/autoform.js"
+></script> -->
+<script>
+  // version: 1.3
+  $(function () {
+    jQuery.ui.autocomplete.prototype._resizeMenu = function () {
+      var ul = this.menu.element;
+      if (this.element.outerWidth() > ul.outerWidth()) {
+        ul.outerWidth(this.element.outerWidth());
+      }
+    };
+
+    var setupAutocomplete = function (by) {
+      $.each(by, function (index, searchableAttribute) {
+        setupAutocompleteByAttribute(searchableAttribute);
+      });
+
+      // workaround for incorrect positioning
+      $(".ui-autocomplete").css({ top: 0, left: 0 });
+    };
+
+    var setupAutocompleteByAttribute = function (searchableAttribute) {
+      $("form[data-slovensko-digital-autoform]").each(function () {
+        var form = $(this);
+
+        var accessToken = form.data("slovensko-digital-autoform");
+        if (!accessToken) {
+          console.error(
+            'Na používanie autoform služby je potrebné získať verejný kľúč. Ak už tento kľúč máte, pridajte ho do formulára ako data-slovensko-digital-autoform="VAS_KLUC".'
+          );
+          return;
+        }
+
+        var limit = form.data("slovensko-digital-autoform-limit");
+        var filter = form.data("slovensko-digital-autoform-filter");
+
+        form
+          .find(
+            '[data-slovensko-digital-autoform="' + searchableAttribute + '"]'
+          )
+          .each(function (index, elm) {
+            $(this)
+              .autocomplete({
+                source: function (request, response) {
+                  $.getJSON(
+                    "https://autoform.ekosystem.slovensko.digital/api/corporate_bodies/search",
+                    {
+                      q: searchableAttribute + ":" + $(elm).val(),
+                      access_token: accessToken,
+                      filter: filter,
+                      limit: limit,
+                    },
+                    response
+                  );
+                },
+                //ICO required length 8 to send API request (default is 2)
+                minLength: searchableAttribute == "cin" ? 8 : 2,
+                focus: function (event, ui) {
+                  return false;
+                },
+                select: function (event, ui) {
+                  if (ui.item) {
+                    form
+                      .find('[data-slovensko-digital-autoform="name"]')
+                      .val(ui.item.name);
+                    form
+                      .find('[data-slovensko-digital-autoform="cin"]')
+                      .val(ui.item.cin);
+                    form
+                      .find(
+                        '[data-slovensko-digital-autoform="datahub_corporate_body.url"]'
+                      )
+                      .val(ui.item.datahub_corporate_body.url);
+                    event.preventDefault();
+                  }
+                },
+              })
+              .autocomplete("instance")._renderItem = function (ul, item) {
+              html = "<strong>" + item.name + "</strong>";
+              if (item.formatted_address) {
+                html += "<br>" + item.formatted_address;
+              }
+              var li = $("<li>").append(html).appendTo(ul);
+
+              if (item.terminated_on) {
+                li.addClass("terminated");
+              }
+
+              return li;
+            };
+          });
+      });
+    };
+
+    setupAutocomplete(["name", "cin"]);
+  });
+</script>
