@@ -4,14 +4,16 @@ title: Step 1
 ---
 
 <h1 class="govuk-heading-xl">Vyberte právnickú osobu</h1>
-{#
-<p class="govuk-body">This is a paragraph inside a two-thirds wide column</p>
-#}
+
+<p class="govuk-body">
+  Zadaním názvu spoločnosti alebo IČO vyhľadajte spoločnosť pre ktorú chcete
+  doplniť rodné čísla zainteresovaných osôb.
+</p>
 
 <form
   data-slovensko-digital-autoform-filter="active"
   data-slovensko-digital-autoform="{{ env.API_KEY_AUTOFORM }}"
-  action="/step2/"
+  action="/step2/choose-statutory"
 >
   <fieldset
     class="govuk-fieldset"
@@ -20,44 +22,32 @@ title: Step 1
   >
     <div class="govuk-form-group">
       <h1 class="govuk-label-wrapper">
-        <label class="govuk-label govuk-label--l" for="name">
-          Názov spoločnosti
+        <label class="govuk-label govuk-label--m" for="search">
+          Vyhľadaj podľa názvu/IČO spoločnosti
         </label>
       </h1>
-      <input
-        class="govuk-input"
-        id="name"
-        type="text"
-        data-slovensko-digital-autoform="name"
-      />
+      <input class="govuk-input" id="search" type="text" />
+      <input id="cin" type="hidden" name="cin" />
     </div>
 
-    alebo
+    <div id="answer" class="govuk-body"></div>
 
-    <div class="govuk-form-group">
-      <h1 class="govuk-label-wrapper">
-        <label class="govuk-label govuk-label--l" for="cin"> IČO </label>
-      </h1>
-      <input
-        class="govuk-input"
-        id="cin"
-        name="cin"
-        type="text"
-        data-slovensko-digital-autoform="cin"
-      />
-    </div>
+    <input type="hidden" data-slovensko-digital-autoform="cin" />
     <button class="govuk-button" data-module="govuk-button" type="submit">
-      Save and continue
+      Ďalej
     </button>
   </fieldset>
 </form>
-<!-- 
-<script
-  async
-  src="https://autoform.ekosystem.slovensko.digital/assets/autoform.js"
-></script> -->
+
+<ul class="govuk-list govuk-!-font-size-16">
+  <li><a href="/step2/autofilled" class="govuk-link">! vsetky udaje ok</a></li>
+  <li>
+    <a href="/step2/unsupported" class="govuk-link"
+      >! ico nepodporovanej formy spolocnosti</a
+    >
+  </li>
+</ul>
 <script>
-  // version: 1.3
   $(function () {
     jQuery.ui.autocomplete.prototype._resizeMenu = function () {
       var ul = this.menu.element;
@@ -66,88 +56,75 @@ title: Step 1
       }
     };
 
-    var setupAutocomplete = function (by) {
-      $.each(by, function (index, searchableAttribute) {
-        setupAutocompleteByAttribute(searchableAttribute);
-      });
+    var setupAutocomplete = function () {
+      setupAutocompleteByAttribute();
 
       // workaround for incorrect positioning
       $(".ui-autocomplete").css({ top: 0, left: 0 });
     };
 
-    var setupAutocompleteByAttribute = function (searchableAttribute) {
+    var setupAutocompleteByAttribute = function () {
       $("form[data-slovensko-digital-autoform]").each(function () {
         var form = $(this);
-
-        var accessToken = form.data("slovensko-digital-autoform");
-        if (!accessToken) {
-          console.error(
-            'Na používanie autoform služby je potrebné získať verejný kľúč. Ak už tento kľúč máte, pridajte ho do formulára ako data-slovensko-digital-autoform="VAS_KLUC".'
-          );
-          return;
-        }
 
         var limit = form.data("slovensko-digital-autoform-limit");
         var filter = form.data("slovensko-digital-autoform-filter");
 
-        form
-          .find(
-            '[data-slovensko-digital-autoform="' + searchableAttribute + '"]'
-          )
-          .each(function (index, elm) {
-            $(this)
-              .autocomplete({
-                source: function (request, response) {
-                  $.getJSON(
-                    "https://autoform.ekosystem.slovensko.digital/api/corporate_bodies/search",
-                    {
-                      q: searchableAttribute + ":" + $(elm).val(),
-                      access_token: accessToken,
-                      filter: filter,
-                      limit: limit,
-                    },
-                    response
-                  );
-                },
-                //ICO required length 8 to send API request (default is 2)
-                minLength: searchableAttribute == "cin" ? 8 : 2,
-                focus: function (event, ui) {
-                  return false;
-                },
-                select: function (event, ui) {
-                  if (ui.item) {
-                    form
-                      .find('[data-slovensko-digital-autoform="name"]')
-                      .val(ui.item.name);
-                    form
-                      .find('[data-slovensko-digital-autoform="cin"]')
-                      .val(ui.item.cin);
-                    form
-                      .find(
-                        '[data-slovensko-digital-autoform="datahub_corporate_body.url"]'
-                      )
-                      .val(ui.item.datahub_corporate_body.url);
-                    event.preventDefault();
-                  }
-                },
-              })
-              .autocomplete("instance")._renderItem = function (ul, item) {
-              html = "<strong>" + item.name + "</strong>";
-              if (item.formatted_address) {
-                html += "<br>" + item.formatted_address;
-              }
-              var li = $("<li>").append(html).appendTo(ul);
+        form.find("#search").each(function (index, elm) {
+          $(this)
+            .autocomplete({
+              source: function (request, response) {
+                let searchableAttribute;
+                if (request.term.length >= 8 && /[0-9]+/.test(request.term)) {
+                  searchableAttribute = "cin";
+                } else {
+                  searchableAttribute = "name";
+                }
+                $.getJSON(
+                  "https://autoform.ekosystem.slovensko.digital/api/corporate_bodies/search",
+                  {
+                    q: searchableAttribute + ":" + $(elm).val(),
+                    access_token: "{{env.API_KEY_AUTOFORM}}",
+                    filter: filter,
+                    limit: limit,
+                  },
+                  response
+                );
+              },
+              //ICO required length 8 to send API request (default is 2)
+              minLength: 2,
+              focus: function (event, ui) {
+                return false;
+              },
+              select: function (event, ui) {
+                if (ui.item) {
+                  form.find("#cin").val(ui.item.cin);
+                  form
+                    .find("#answer")
+                    .html(
+                      `<strong>${ui.item.name}</strong><br/>${ui.item.cin}<br/>${ui.item.formatted_address}`
+                    );
+                  event.preventDefault();
+                }
+              },
+            })
+            .autocomplete("instance")._renderItem = function (ul, item) {
+            html = "<strong>" + item.name + "</strong>";
+            if (item.formatted_address) {
+              html += "<br>" + item.formatted_address;
+            }
+            var li = $("<li>").append(html).appendTo(ul);
 
-              if (item.terminated_on) {
-                li.addClass("terminated");
-              }
+            if (item.terminated_on) {
+              li.addClass("terminated");
+            }
 
-              return li;
-            };
-          });
+            return li;
+          };
+        });
       });
     };
 
-    setupAutocomplete(["name", "cin"]);
+    setupAutocomplete();
   });
 </script>

@@ -8,6 +8,7 @@ module.exports = function (eleventyConfig) {
     "node_modules/govuk-frontend/govuk/assets/images": "assets/images",
     "node_modules/govuk-frontend/govuk/assets/fonts": "assets/fonts",
     "node-modules/govuk-frontend/govuk/*.js": "js/",
+    CNAME: "CNAME",
   });
 
   // Set custom directories for input, output, includes, and data

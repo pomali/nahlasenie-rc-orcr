@@ -1,0 +1,150 @@
+---
+layout: layout.njk
+title: Step 2
+---
+
+<h1 class="govuk-heading-xl">Navrhovateľ</h1>
+<p class="govuk-body">This is a paragraph inside a two-thirds wide column</p>
+
+<form
+  data-slovensko-digital-autoform-filter="active"
+  data-slovensko-digital-autoform="{{ env.API_KEY_AUTOFORM }}"
+  action=""
+>
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">Meno</h1>
+    </legend>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="given-name"> Meno </label>
+      <input
+        class="govuk-input"
+        id="given-name"
+        name="given-name"
+        type="text"
+        autocomplete="given-name"
+      />
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="family-name"> Priezvisko </label>
+      <input
+        class="govuk-input"
+        id="family-name"
+        name="family-name"
+        type="text"
+        autocomplete="family-name"
+      />
+    </div>
+  </fieldset>
+
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">Bydlisko</h1>
+    </legend>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="address-line-1"> Address line 1 </label>
+      <input
+        class="govuk-input"
+        id="address-line-1"
+        name="address-line-1"
+        type="text"
+        autocomplete="address-line1"
+      />
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="address-line-2">
+        Address line 2 (optional)
+      </label>
+      <input
+        class="govuk-input"
+        id="address-line-2"
+        name="address-line-2"
+        type="text"
+        autocomplete="address-line2"
+      />
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="address-town"> Town or city </label>
+      <input
+        class="govuk-input govuk-!-width-two-thirds"
+        id="address-town"
+        name="address-town"
+        type="text"
+        autocomplete="address-level2"
+      />
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="address-postcode"> Postcode </label>
+      <input
+        class="govuk-input govuk-input--width-10"
+        id="address-postcode"
+        name="address-postcode"
+        type="text"
+        autocomplete="postal-code"
+      />
+    </div>
+  </fieldset>
+</form>
+
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">
+    stakeholder_entries
+  </caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Meno</th>
+      <th scope="col" class="govuk-table__header"></th>
+      <th scope="col" class="govuk-table__header">IČO</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body" id="stakeholder_entries">
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">
+        ${item.person_formatted_name} (${item.stakeholder_type.name})
+      </td>
+      <td class="govuk-table__cell">${item.address?}</td>
+      <td class="govuk-table__cell">${item.stakeholder_type.name}</td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  $(function () {
+    // save data
+    const statutory = new URL(window.location.href).searchParams.get(
+      "statutory"
+    );
+    window.sessionStorage.setItem("statutory", decodeURIComponent(statutory));
+
+    // load data
+
+    const cin = window.sessionStorage.getItem("cin");
+    const datahub_url = window.sessionStorage.getItem("datahub.url");
+
+    $.getJSON(
+      datahub_url,
+      {
+        access_token: "{{env.API_KEY_DATAHUB}}",
+      },
+      (data) => {
+        console.log(data);
+
+        data.stakeholder_entries.forEach((item) => {
+          $("#stakeholder_entries").append(`<tr class="govuk-table__row">
+      <td class="govuk-table__cell">
+        ${item.person_formatted_name} (${item.stakeholder_type.name})
+      </td>
+      <td class="govuk-table__cell">${item.address}</td>
+      <td class="govuk-table__cell">${item.stakeholder_type.name}</td>
+    </tr>`);
+        });
+      }
+    );
+  });
+</script>

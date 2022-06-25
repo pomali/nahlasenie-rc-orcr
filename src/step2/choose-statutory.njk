@@ -1,0 +1,93 @@
+---
+layout: layout.njk
+title: Step 2
+---
+
+<h1 class="govuk-heading-xl">Navrhovateľ</h1>
+<p class="govuk-body">This is a paragraph inside a two-thirds wide column</p>
+
+<form
+  data-slovensko-digital-autoform-filter="active"
+  data-slovensko-digital-autoform="{{ env.API_KEY_AUTOFORM }}"
+  action="/step3/"
+>
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset" aria-describedby="sign-in-hint">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-fieldset__heading">Kto navrhuje zmenu?</h1>
+      </legend>
+      <div id="sign-in-hint" class="govuk-hint">Vyberte navrhovateľa</div>
+      <div class="govuk-radios" id="radios" data-module="govuk-radios">
+
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            name="statutory"
+            type="radio"
+            value="${id(item)}"
+            aria-describedby="statutory-item-hint"
+          />
+          <label class="govuk-label govuk-radios__label" for="sign-in">
+            ${item.type} - ${item.formatted_name}
+          </label>
+          <div id="statutory-item-hint" class="govuk-hint govuk-radios__hint">
+            ${item.street} ${item.building_number}, ${item.postal_code}, ${
+            item.municipality
+          } ${item.country}
+          </div>
+        </div>
+
+      </div>
+    </fieldset>
+  </div>
+  <button class="govuk-button" data-module="govuk-button" type="submit">
+    Ďalej
+  </button>
+</form>
+<script>
+  $(function () {
+    const cin = new URL(window.location.href).searchParams.get("cin");
+    window.sessionStorage.setItem("cin", cin);
+    $.getJSON(
+      "https://autoform.ekosystem.slovensko.digital/api/corporate_bodies/search",
+      {
+        q: "cin:" + cin,
+        access_token: "{{env.API_KEY_AUTOFORM}}",
+        filter: "active",
+        limit: 1,
+      },
+      (data) => {
+        console.log(data);
+
+        function id(item) {
+          return encodeURIComponent(JSON.stringify(item));
+        }
+
+        window.sessionStorage.setItem(
+          "datahub.url",
+          data[0].datahub_corporate_body.url
+        );
+
+        data[0].statutory.forEach((item) => {
+          $("#radios").append(`<div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            name="statutory"
+            type="radio"
+            value="${id(item)}"
+            aria-describedby="statutory-item-hint"
+          />
+          <label class="govuk-label govuk-radios__label" for="sign-in">
+            ${item.type} - ${item.formatted_name}
+          </label>
+          <div id="statutory-item-hint" class="govuk-hint govuk-radios__hint">
+            ${item.street} ${item.building_number}, ${item.postal_code}, ${
+            item.municipality
+          } ${item.country}
+          </div>
+        </div>`);
+        });
+      }
+    );
+  });
+</script>

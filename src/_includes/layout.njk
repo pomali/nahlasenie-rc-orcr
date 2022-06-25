@@ -21,7 +21,7 @@
         color: #0b0c0c;
         font-family: "GDS Transport", arial, sans-serif;
         font-size: 14px;
-        font-weight: 100; 
+        font-weight: 100;
       }
 
       .ui-autocomplete > li {
@@ -45,15 +45,10 @@
     </style>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script>
-      document.body.className = document.body.className
-        ? document.body.className + " js-enabled"
-        : "js-enabled";
-    </script>
   </head>
   <body>
     <div class="govuk-width-container">
-      <a href="#" class="govuk-back-link">Back</a>
+      <a href="#" class="govuk-back-link">Späť</a>
 
       <main class="govuk-main-wrapper">
         <div class="govuk-grid-row">
@@ -61,16 +56,23 @@
             {{ content | safe }}
           </div>
 
+          {#
           <div class="govuk-grid-column-one-third">
             <h2 class="govuk-heading-m">One-third column</h2>
             <p class="govuk-body">
               This is a paragraph inside a one-third wide column
             </p>
           </div>
+          #}
         </div>
       </main>
     </div>
 
+    <script>
+      document.body.className = document.body.className
+        ? document.body.className + " js-enabled"
+        : "js-enabled";
+    </script>
     <script src="/js/govuk.js"></script>
     <script>
       window.GOVUKFrontend.initAll();
